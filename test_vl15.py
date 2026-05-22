@@ -7,7 +7,7 @@ import torch
 from paddleocr import PaddleOCRVL
 
 # --- Change this to your image path ---
-sample_img = "./tests/test_files/eq3.jpg"
+sample_img = "./tests/test_files/eq4.jpg"
 # --------------------------------------
 
 # VL-1.5 needs the doc-parser extra (not just ocr-core):

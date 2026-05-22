@@ -1,0 +1,9 @@
+## MÁY HÀN CO2 TÂN THÀNH -TTC-500T
+
+Mã MMTB :B22401468
+
+Model : TTC-500T
+
+Xưởng : AH6
+
+Vị trí : RHT1

@@ -1,0 +1,419 @@
+{
+    "input_path": "./tests/test_files/eq4.jpg",
+    "page_index": null,
+    "page_count": null,
+    "width": 857,
+    "height": 317,
+    "model_settings": {
+        "use_doc_preprocessor": false,
+        "use_layout_detection": true,
+        "use_chart_recognition": false,
+        "use_seal_recognition": false,
+        "use_ocr_for_image_block": false,
+        "format_block_content": false,
+        "merge_layout_blocks": true,
+        "markdown_ignore_labels": [
+            "number",
+            "footnote",
+            "header",
+            "header_image",
+            "footer",
+            "footer_image",
+            "aside_text"
+        ],
+        "return_layout_polygon_points": true
+    },
+    "parsing_res_list": [
+        {
+            "block_label": "paragraph_title",
+            "block_content": "MÁY HÀN CO2 TÂN THÀNH -TTC-500T",
+            "block_bbox": [
+                39,
+                44,
+                757,
+                148
+            ],
+            "block_id": 0,
+            "block_order": 1,
+            "group_id": 0,
+            "block_polygon_points": [
+                [
+                    38.0,
+                    48.0
+                ],
+                [
+                    757.0311889648438,
+                    63.1907958984375
+                ],
+                [
+                    755.25732421875,
+                    147.1533203125
+                ],
+                [
+                    36.22613525390625,
+                    131.9625244140625
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Mã MMTB :B22401468",
+            "block_bbox": [
+                55,
+                134,
+                636,
+                192
+            ],
+            "block_id": 1,
+            "block_order": 2,
+            "group_id": 1,
+            "block_polygon_points": [
+                [
+                    55.0,
+                    134.0
+                ],
+                [
+                    55.0,
+                    170.0
+                ],
+                [
+                    64.0,
+                    175.0
+                ],
+                [
+                    635.0,
+                    189.0
+                ],
+                [
+                    631.0,
+                    152.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Model : TTC-500T",
+            "block_bbox": [
+                65,
+                177,
+                488,
+                229
+            ],
+            "block_id": 2,
+            "block_order": 3,
+            "group_id": 2,
+            "block_polygon_points": [
+                [
+                    64.0,
+                    177.0
+                ],
+                [
+                    64.0,
+                    210.0
+                ],
+                [
+                    73.0,
+                    215.0
+                ],
+                [
+                    483.0,
+                    227.0
+                ],
+                [
+                    487.0,
+                    193.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Xưởng : AH6",
+            "block_bbox": [
+                71,
+                217,
+                376,
+                261
+            ],
+            "block_id": 3,
+            "block_order": 4,
+            "group_id": 3,
+            "block_polygon_points": [
+                [
+                    70.0,
+                    219.0
+                ],
+                [
+                    70.0,
+                    229.0
+                ],
+                [
+                    75.0,
+                    251.0
+                ],
+                [
+                    79.0,
+                    254.0
+                ],
+                [
+                    366.0,
+                    260.0
+                ],
+                [
+                    374.0,
+                    249.0
+                ],
+                [
+                    374.0,
+                    230.0
+                ],
+                [
+                    345.0,
+                    225.0
+                ],
+                [
+                    125.0,
+                    217.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Vị trí : RHT1",
+            "block_bbox": [
+                79,
+                256,
+                400,
+                304
+            ],
+            "block_id": 4,
+            "block_order": 5,
+            "group_id": 4,
+            "block_polygon_points": [
+                [
+                    79.0,
+                    256.0
+                ],
+                [
+                    79.0,
+                    268.0
+                ],
+                [
+                    84.0,
+                    293.0
+                ],
+                [
+                    88.0,
+                    296.0
+                ],
+                [
+                    398.0,
+                    302.0
+                ],
+                [
+                    398.0,
+                    269.0
+                ],
+                [
+                    394.0,
+                    266.0
+                ]
+            ]
+        }
+    ],
+    "layout_det_res": {
+        "input_path": null,
+        "page_index": null,
+        "boxes": [
+            {
+                "cls_id": 17,
+                "label": "paragraph_title",
+                "score": 0.5169340968132019,
+                "coordinate": [
+                    39,
+                    44,
+                    757,
+                    148
+                ],
+                "order": 1,
+                "polygon_points": [
+                    [
+                        38.0,
+                        48.0
+                    ],
+                    [
+                        757.0311889648438,
+                        63.1907958984375
+                    ],
+                    [
+                        755.25732421875,
+                        147.1533203125
+                    ],
+                    [
+                        36.22613525390625,
+                        131.9625244140625
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6234884858131409,
+                "coordinate": [
+                    55,
+                    134,
+                    636,
+                    192
+                ],
+                "order": 2,
+                "polygon_points": [
+                    [
+                        55.0,
+                        134.0
+                    ],
+                    [
+                        55.0,
+                        170.0
+                    ],
+                    [
+                        64.0,
+                        175.0
+                    ],
+                    [
+                        635.0,
+                        189.0
+                    ],
+                    [
+                        631.0,
+                        152.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.670732855796814,
+                "coordinate": [
+                    65,
+                    177,
+                    488,
+                    229
+                ],
+                "order": 3,
+                "polygon_points": [
+                    [
+                        64.0,
+                        177.0
+                    ],
+                    [
+                        64.0,
+                        210.0
+                    ],
+                    [
+                        73.0,
+                        215.0
+                    ],
+                    [
+                        483.0,
+                        227.0
+                    ],
+                    [
+                        487.0,
+                        193.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6295949816703796,
+                "coordinate": [
+                    71,
+                    217,
+                    376,
+                    261
+                ],
+                "order": 4,
+                "polygon_points": [
+                    [
+                        70.0,
+                        219.0
+                    ],
+                    [
+                        70.0,
+                        229.0
+                    ],
+                    [
+                        75.0,
+                        251.0
+                    ],
+                    [
+                        79.0,
+                        254.0
+                    ],
+                    [
+                        366.0,
+                        260.0
+                    ],
+                    [
+                        374.0,
+                        249.0
+                    ],
+                    [
+                        374.0,
+                        230.0
+                    ],
+                    [
+                        345.0,
+                        225.0
+                    ],
+                    [
+                        125.0,
+                        217.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6501979231834412,
+                "coordinate": [
+                    79,
+                    256,
+                    400,
+                    304
+                ],
+                "order": 5,
+                "polygon_points": [
+                    [
+                        79.0,
+                        256.0
+                    ],
+                    [
+                        79.0,
+                        268.0
+                    ],
+                    [
+                        84.0,
+                        293.0
+                    ],
+                    [
+                        88.0,
+                        296.0
+                    ],
+                    [
+                        398.0,
+                        302.0
+                    ],
+                    [
+                        398.0,
+                        269.0
+                    ],
+                    [
+                        394.0,
+                        266.0
+                    ]
+                ]
+            }
+        ]
+    }
+}
