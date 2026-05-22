@@ -6,7 +6,7 @@ import os
 sys.stdout.reconfigure(encoding="utf-8")
 
 # --- Change this to your Vietnamese image path ---
-sample_img = "./tests/test_files/ocr_eq2.jpg"
+sample_img = "./tests/test_files/eq3.jpg"
 # -------------------------------------------------
 
 print(f"Running Vietnamese OCR on: {sample_img}")
