@@ -24,14 +24,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy requirements file first for caching
 COPY requirements.txt .
 
-# Install dependencies
+# Install base dependencies (excludes torch)
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Install paddlepaddle (CPU version)
-RUN pip install --no-cache-dir paddlepaddle==3.0.0b2 || pip install --no-cache-dir paddlepaddle
+# Install torch 2.4.0 CPU — must be >= 2.4 for PaddleOCR VL-1.5 transformers engine
+RUN pip install --no-cache-dir \
+    torch==2.4.0 \
+    torchvision==0.19.0 \
+    --index-url https://download.pytorch.org/whl/cpu
 
-# Copy the entire PaddleOCR project code
+# Install paddlepaddle CPU
+RUN pip install --no-cache-dir paddlepaddle==3.0.0 || pip install --no-cache-dir paddlepaddle
+
+# Install PaddleOCR stack
+RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers>=4.40.0
+
+# Copy the entire project code
 COPY . .
 
 # Ensure app package is in the Python search path
@@ -40,6 +49,5 @@ ENV PYTHONPATH=/app
 # Expose server port
 EXPOSE 8000
 
-# Run uvicorn production server
-# Replace the last line (CMD) with this — uses Railway's dynamic $PORT
+# Run uvicorn — $PORT is injected by Railway at runtime
 CMD uvicorn api.main:app --host 0.0.0.0 --port $PORT
