@@ -6,8 +6,8 @@ lmdb<1.5; python_version < "3.9"
 tqdm
 numpy
 rapidfuzz
-opencv-python
-opencv-contrib-python
+opencv-python-headless
+opencv-contrib-python-headless
 cython
 Pillow
 pyyaml

@@ -5,51 +5,51 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8000
+ENV PYTHONPATH=/app
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install minimal system dependencies (excluding bulky GUI/X11 libraries since we use headless OpenCV)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    libgl1 \
-    libglib2.0-0 \
     libgomp1 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file
+# Copy and install core Python requirements first (leverages Docker cache)
 COPY requirements.txt .
-
-# Install base dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
-# Install paddlepaddle CPU explicitly FIRST before anything else pulls it in
-# Replace the paddlepaddle install line with this:
-RUN pip install --no-cache-dir paddlepaddle==3.0.0 --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cpu/ 2>&1 || true
-RUN pip show paddlepaddle || echo "PADDLEPADDLE NOT INSTALLED"
-
-# Install PaddleOCR stack — use --no-deps on paddlex to prevent it from pulling CUDA torch
-RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub
-
-# Force CPU torch LAST so paddlex cannot overwrite it
-RUN pip install --no-cache-dir --force-reinstall \
+# Step 1: Pre-install CPU PyTorch explicitly (prevents GPU bloat from paddlex)
+RUN pip install --no-cache-dir \
     torch==2.4.0 \
     torchvision==0.19.0 \
     --index-url https://download.pytorch.org/whl/cpu
 
-# Copy the entire project code
+# Step 2: Pre-install CPU PaddlePaddle explicitly from official Baidu CPU repository mirror
+RUN pip install --no-cache-dir \
+    paddlepaddle==3.1.0 \
+    -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+
+# Step 3: Pre-install PaddleX from the correct tested release branch (matches repository requirements)
+RUN pip install --no-cache-dir \
+    "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@release/3.5"
+
+# Step 4: Pre-install Hugging Face Transformers & Hub for PaddleOCRVL VLM pipelines
+RUN pip install --no-cache-dir \
+    "transformers>=5.8.0" \
+    huggingface_hub
+
+# Step 5: Copy the entire local project codebase
 COPY . .
 
-# Ensure app package is in the Python search path
-ENV PYTHONPATH=/app
+# Step 6: Install the local PaddleOCR package in local/editable mode to bind the codebase
+RUN pip install --no-cache-dir -e .
 
-# Expose server port
+# Expose container port
 EXPOSE 8000
 
-# Run uvicorn — $PORT is injected by Railway at runtime
-CMD uvicorn api.main:app --host 0.0.0.0 --port $PORT
+# Start the API - Railway injects the environment variable $PORT
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
