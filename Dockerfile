@@ -39,9 +39,9 @@ RUN pip install --no-cache-dir \
     paddlepaddle==3.1.0 \
     -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 
-# Step 3: Pre-install PaddleX from the correct tested release branch (matches repository requirements)
+# Step 3: Pre-install PaddleX with ocr/genai-client extras from the correct release branch
 RUN pip install --no-cache-dir \
-    "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@release/3.5"
+    "paddlex[ocr,genai-client]@git+https://github.com/PaddlePaddle/PaddleX.git@release/3.5"
 
 # Step 4: Pre-install Hugging Face Transformers & Hub for PaddleOCRVL VLM pipelines
 RUN pip install --no-cache-dir \
@@ -51,8 +51,8 @@ RUN pip install --no-cache-dir \
 # Step 5: Copy the entire local project codebase
 COPY . .
 
-# Step 6: Install the local PaddleOCR package in local/editable mode to bind the codebase
-RUN pip install --no-cache-dir -e .
+# Step 6: Install the local PaddleOCR package in local/editable mode with all optional dependencies
+RUN pip install --no-cache-dir -e ".[all]"
 
 # Expose container port
 EXPOSE 8000
