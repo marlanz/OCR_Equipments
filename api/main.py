@@ -76,6 +76,17 @@ def root():
         "docs": "/docs",
     }
 
+@app.get("/debug", tags=["Debug"])
+def debug_versions():
+    import importlib
+    versions = {}
+    for pkg in ["torch", "torchvision", "transformers", "paddlex", "paddlepaddle"]:
+        try:
+            m = importlib.import_module(pkg)
+            versions[pkg] = getattr(m, "__version__", "unknown")
+        except Exception as e:
+            versions[pkg] = f"NOT FOUND: {e}"
+    return versions
 
 @app.post("/ocr", response_model=OCRResponse, tags=["OCR"])
 async def run_ocr(

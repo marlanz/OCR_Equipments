@@ -9,7 +9,7 @@ ENV PORT=8000
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies needed for OpenCV, PaddleOCR, and compiling cython/etc.
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libgl1 \
@@ -21,24 +21,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file first for caching
+# Copy requirements file
 COPY requirements.txt .
 
-# Install base dependencies (excludes torch)
+# Install base dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Install torch 2.4.0 CPU — must be >= 2.4 for PaddleOCR VL-1.5 transformers engine
-RUN pip install --no-cache-dir \
+# Install paddlepaddle CPU explicitly FIRST before anything else pulls it in
+RUN pip install --no-cache-dir paddlepaddle==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html \
+    || pip install --no-cache-dir paddlepaddle==3.0.0 \
+    || pip install --no-cache-dir paddlepaddle
+
+# Install PaddleOCR stack — use --no-deps on paddlex to prevent it from pulling CUDA torch
+RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub
+
+# Force CPU torch LAST so paddlex cannot overwrite it
+RUN pip install --no-cache-dir --force-reinstall \
     torch==2.4.0 \
     torchvision==0.19.0 \
     --index-url https://download.pytorch.org/whl/cpu
-
-# Install paddlepaddle CPU
-RUN pip install --no-cache-dir paddlepaddle==3.0.0 || pip install --no-cache-dir paddlepaddle
-
-# Install PaddleOCR stack
-RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub
 
 # Copy the entire project code
 COPY . .
