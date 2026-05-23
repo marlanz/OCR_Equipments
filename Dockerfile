@@ -11,10 +11,15 @@ ENV SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 # Set working directory
 WORKDIR /app
 
-# Install minimal system dependencies (excluding bulky GUI/X11 libraries since we use headless OpenCV)
+# Install system dependencies (required for image processing and deep learning libraries)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libgl1 \
+    libglib2.0-0 \
     libgomp1 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
     git \
     && rm -rf /var/lib/apt/lists/*
 
