@@ -38,7 +38,7 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir paddlepaddle==3.0.0 || pip install --no-cache-dir paddlepaddle
 
 # Install PaddleOCR stack
-RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub==0.26.0
+RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub
 
 # Copy the entire project code
 COPY . .
