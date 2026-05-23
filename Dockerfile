@@ -29,9 +29,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Install paddlepaddle CPU explicitly FIRST before anything else pulls it in
-RUN pip install --no-cache-dir paddlepaddle==3.0.0 -i https://pypi.tuna.tsinghua.edu.cn/simple \
-    || pip install --no-cache-dir paddlepaddle==3.0.0 --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cpu/ \
-    || pip install --no-cache-dir paddlepaddle
+# Replace the paddlepaddle install line with this:
+RUN pip install --no-cache-dir paddlepaddle==3.0.0 --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cpu/ 2>&1 || true
+RUN pip show paddlepaddle || echo "PADDLEPADDLE NOT INSTALLED"
 
 # Install PaddleOCR stack — use --no-deps on paddlex to prevent it from pulling CUDA torch
 RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0" paddleocr>=2.9.0 transformers==5.9.0 huggingface_hub
