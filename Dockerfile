@@ -41,4 +41,5 @@ ENV PYTHONPATH=/app
 EXPOSE 8000
 
 # Run uvicorn production server
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Replace the last line (CMD) with this — uses Railway's dynamic $PORT
+CMD uvicorn api.main:app --host 0.0.0.0 --port $PORT
