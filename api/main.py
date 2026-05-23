@@ -86,6 +86,22 @@ def debug_versions():
             versions[pkg] = getattr(m, "__version__", "unknown")
         except Exception as e:
             versions[pkg] = f"NOT FOUND: {e}"
+
+    # Check if AutoImageProcessor is importable directly
+    try:
+        from transformers import AutoImageProcessor
+        versions["AutoImageProcessor"] = "OK"
+    except Exception as e:
+        versions["AutoImageProcessor"] = f"FAILED: {e}"
+
+    # Check paddlex's own transformers path
+    try:
+        import paddlex
+        paddlex_path = paddlex.__file__
+        versions["paddlex_path"] = paddlex_path
+    except Exception as e:
+        versions["paddlex_path"] = f"FAILED: {e}"
+
     return versions
 
 @app.post("/ocr", response_model=OCRResponse, tags=["OCR"])
