@@ -18,6 +18,7 @@ import logging
 import os
 import sys
 import tempfile
+import threading
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -41,9 +42,10 @@ logging.basicConfig(
 logger = logging.getLogger("paddleocr_vl")
 
 # ---------------------------------------------------------------------------
-# Global singleton — loaded once at startup, reused across all requests
+# Global singleton — loaded lazily, reused across all requests
 # ---------------------------------------------------------------------------
 _pipeline = None
+_pipeline_lock = threading.Lock()
 _startup_time: float = 0.0
 _device: str = "cpu"
 
@@ -81,14 +83,24 @@ def _load_pipeline():
         raise exc
 
 
+def _get_pipeline():
+    """Thread-safe lazy getter for the PaddleOCR-VL-1.5 pipeline."""
+    global _pipeline
+    if _pipeline is None:
+        with _pipeline_lock:
+            if _pipeline is None:
+                _load_pipeline()
+    return _pipeline
+
+
 # ---------------------------------------------------------------------------
-# Lifespan — load model on startup, release on shutdown
+# Lifespan — track startup time and handle shutdown
 # ---------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global _startup_time
     _startup_time = time.time()
-    _load_pipeline()
+    # Lazy load on first request to speed up container startup times
     yield
     logger.info("Shutting down — releasing pipeline.")
     # PaddleOCRVL has no explicit close(); Python GC handles it.
@@ -218,6 +230,18 @@ def _extract_result(res) -> PageResult:
 # Endpoints
 # ---------------------------------------------------------------------------
 
+@app.get("/", tags=["health"])
+def index():
+    """Welcome and status landing page that returns fast without loading the model."""
+    return {
+        "status": "healthy",
+        "service": "PaddleOCR-VL-1.5 API",
+        "device": _device,
+        "model_loaded": _pipeline is not None,
+        "endpoints": ["/health", "/predict", "/predict/path"]
+    }
+
+
 @app.get("/health", response_model=HealthResponse, tags=["health"])
 def health():
     """Liveness + readiness check."""
@@ -246,8 +270,7 @@ async def predict(
 
     Returns OCR results as structured JSON and Markdown per page/region.
     """
-    if _pipeline is None:
-        raise HTTPException(status_code=503, detail="Model not loaded yet.")
+    pipeline = _get_pipeline()
 
     if file is None and not image_path:
         raise HTTPException(
@@ -279,7 +302,7 @@ async def predict(
         # --- Inference (run off-thread to avoid blocking event loop) ---
         def run_inference_and_extraction():
             with torch.no_grad():
-                raw_results = list(_pipeline.predict(input_path))
+                raw_results = list(pipeline.predict(input_path))
             return [_extract_result(res) for res in raw_results]
 
         page_results = await asyncio.to_thread(run_inference_and_extraction)
@@ -319,8 +342,7 @@ async def predict_by_path(body: dict):
     if not image_path:
         raise HTTPException(status_code=422, detail="`image_path` required in body.")
 
-    if _pipeline is None:
-        raise HTTPException(status_code=503, detail="Model not loaded yet.")
+    pipeline = _get_pipeline()
 
     if not os.path.exists(image_path):
         raise HTTPException(status_code=404, detail=f"File not found: {image_path}")
@@ -330,7 +352,7 @@ async def predict_by_path(body: dict):
         # --- Inference (run off-thread to avoid blocking event loop) ---
         def run_inference_and_extraction():
             with torch.no_grad():
-                raw_results = list(_pipeline.predict(image_path))
+                raw_results = list(pipeline.predict(image_path))
             return [_extract_result(res) for res in raw_results]
 
         page_results = await asyncio.to_thread(run_inference_and_extraction)

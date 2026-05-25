@@ -6,9 +6,9 @@ FROM python:3.10-slim AS builder
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
-    HF_HOME=/models/huggingface \
-    PADDLE_HOME=/models/paddle \
-    PADDLE_USER_DIR=/models/paddle\    
+    HF_HOME=/data/huggingface \
+    PADDLE_HOME=/data/paddle \
+    PADDLE_USER_DIR=/data/paddle \
     SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -70,10 +70,10 @@ FROM python:3.10-slim AS runner
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
-    PORT=8000 \
-    HF_HOME=/models/huggingface \
-    PADDLE_HOME=/models/paddle \
-    PADDLE_USER_DIR=/models/paddle \
+    PORT=7860 \
+    HF_HOME=/data/huggingface \
+    PADDLE_HOME=/data/paddle \
+    PADDLE_USER_DIR=/data/paddle \
     PATH="/opt/venv/bin:$PATH" \
     SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 
@@ -86,8 +86,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -g 1000 appgroup && \
     useradd -u 1000 -g appgroup -m -s /bin/bash appuser
 
-RUN mkdir -p /models/huggingface /models/paddle && \
-    chown -R appuser:appgroup /models
+RUN mkdir -p /data/huggingface /data/paddle && \
+    chown -R appuser:appgroup /data
 
 COPY --from=builder /opt/venv /opt/venv
 
@@ -98,6 +98,6 @@ RUN chown -R appuser:appgroup /app
 
 USER appuser
 
-EXPOSE 8000
+EXPOSE 7860
 
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-7860}"]
