@@ -7,7 +7,8 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
-    PORT=8000
+    PORT=8000\
+    SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 
 # Install runtime and compile-time system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
