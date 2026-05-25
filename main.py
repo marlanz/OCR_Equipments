@@ -12,6 +12,7 @@ Install deps:
     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 """
 
+import asyncio
 import io
 import logging
 import os
@@ -65,15 +66,19 @@ def _load_pipeline():
             "Running on CPU. For GPU/fp16 reinstall PyTorch with CUDA support."
         )
 
-    _pipeline = PaddleOCRVL(
-        pipeline_version="v1.5",
-        engine="transformers",           # HuggingFace backend — proper fp16 support
-        device=_device,
-        use_doc_orientation_classify=False,  # disabled to save VRAM
-        use_doc_unwarping=False,             # disabled to save VRAM
-        use_layout_detection=True,
-    )
-    logger.info("Pipeline ready.")
+    try:
+        _pipeline = PaddleOCRVL(
+            pipeline_version="v1.5",
+            engine="transformers",           # HuggingFace backend — proper fp16 support
+            device=_device,
+            use_doc_orientation_classify=False,  # disabled to save VRAM
+            use_doc_unwarping=False,             # disabled to save VRAM
+            use_layout_detection=True,
+        )
+        logger.info("Pipeline ready.")
+    except Exception as exc:
+        logger.exception("Failed to load PaddleOCR-VL-1.5 pipeline")
+        raise exc
 
 
 # ---------------------------------------------------------------------------
@@ -271,11 +276,13 @@ async def predict(
 
         logger.info("Running inference on: %s", input_path)
 
-        # --- Inference (mirrors test_vl15.py exactly) ---
-        with torch.no_grad():
-            raw_results = list(_pipeline.predict(input_path))
+        # --- Inference (run off-thread to avoid blocking event loop) ---
+        def run_inference_and_extraction():
+            with torch.no_grad():
+                raw_results = list(_pipeline.predict(input_path))
+            return [_extract_result(res) for res in raw_results]
 
-        page_results = [_extract_result(res) for res in raw_results]
+        page_results = await asyncio.to_thread(run_inference_and_extraction)
 
         elapsed = round(time.time() - t0, 3)
         logger.info("Inference done in %.3fs — %d page(s)", elapsed, len(page_results))
@@ -320,10 +327,13 @@ async def predict_by_path(body: dict):
 
     t0 = time.time()
     try:
-        with torch.no_grad():
-            raw_results = list(_pipeline.predict(image_path))
+        # --- Inference (run off-thread to avoid blocking event loop) ---
+        def run_inference_and_extraction():
+            with torch.no_grad():
+                raw_results = list(_pipeline.predict(image_path))
+            return [_extract_result(res) for res in raw_results]
 
-        page_results = [_extract_result(res) for res in raw_results]
+        page_results = await asyncio.to_thread(run_inference_and_extraction)
         elapsed = round(time.time() - t0, 3)
 
         return PredictResponse(

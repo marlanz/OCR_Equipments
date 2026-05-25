@@ -86,6 +86,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -g 1000 appgroup && \
     useradd -u 1000 -g appgroup -m -s /bin/bash appuser
 
+RUN mkdir -p /models/huggingface /models/paddle && \
+    chown -R appuser:appgroup /models
+
 COPY --from=builder /opt/venv /opt/venv
 
 WORKDIR /app
