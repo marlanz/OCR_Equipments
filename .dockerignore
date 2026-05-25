@@ -1,0 +1,58 @@
+# Version control
+.git
+.github
+.gitignore
+
+# Environments & Packages
+.venv
+venv
+ENV
+env
+*.egg-info
+dist
+build
+
+# Caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Output & Upload directories
+output/
+output_vl/
+uploads/
+temp/
+logs/
+*.log
+
+# Unneeded assets at runtime
+tests/
+benchmark/
+deploy/
+docs/
+doc/
+*.md
+*.sh
+*.yml
+*.yaml
+*.in
+CNAME
+LICENSE
+pyproject.toml.bak
+requirements.txt.bak
+
+# Local model cache folders (to avoid bloating build context)
+.paddleocr/
+.cache/
