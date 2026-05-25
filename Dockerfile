@@ -8,7 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DEBIAN_FRONTEND=noninteractive \
     HF_HOME=/models/huggingface \
     PADDLE_HOME=/models/paddle \
-    PADDLE_USER_DIR=/models/paddle
+    PADDLE_USER_DIR=/models/paddle\    
+    SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
