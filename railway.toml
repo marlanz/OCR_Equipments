@@ -5,9 +5,6 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-# Dynamic port binding using the $PORT environment variable
-startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
-
 # Restart policy for container reliability
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
