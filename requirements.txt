@@ -36,6 +36,7 @@ tqdm
 # API Server & Gateway
 fastapi
 uvicorn
+python-multipart
 
 # Testing
 pytest
