@@ -1,0 +1,249 @@
+{
+    "input_path": "uploads\\7870490a481d.jpg",
+    "page_index": null,
+    "page_count": null,
+    "width": 565,
+    "height": 276,
+    "model_settings": {
+        "use_doc_preprocessor": false,
+        "use_layout_detection": true,
+        "use_chart_recognition": false,
+        "use_seal_recognition": false,
+        "use_ocr_for_image_block": false,
+        "format_block_content": false,
+        "merge_layout_blocks": true,
+        "markdown_ignore_labels": [
+            "number",
+            "footnote",
+            "header",
+            "header_image",
+            "footer",
+            "footer_image",
+            "aside_text"
+        ],
+        "return_layout_polygon_points": true
+    },
+    "parsing_res_list": [
+        {
+            "block_label": "algorithm",
+            "block_content": "MÁY HÀN CO2 TÂN THÀNH -TTC-500T\nMã MMTB : B22400814\nModel : TTC-500T\nXưởng : AH2\nVị trí : TỔ RÁP HOÀN THIỆN 2",
+            "block_bbox": [
+                37,
+                19,
+                483,
+                260
+            ],
+            "block_id": 0,
+            "block_order": 1,
+            "group_id": 0,
+            "block_polygon_points": [
+                [
+                    37.0,
+                    19.0
+                ],
+                [
+                    483.0,
+                    19.0
+                ],
+                [
+                    483.0,
+                    260.0
+                ],
+                [
+                    37.0,
+                    260.0
+                ]
+            ]
+        }
+    ],
+    "layout_det_res": {
+        "input_path": null,
+        "page_index": null,
+        "boxes": [
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.40909549593925476,
+                "coordinate": [
+                    37,
+                    19,
+                    482,
+                    88
+                ],
+                "order": 1,
+                "polygon_points": [
+                    [
+                        37.0,
+                        19.0
+                    ],
+                    [
+                        482.0,
+                        19.0
+                    ],
+                    [
+                        482.0,
+                        88.0
+                    ],
+                    [
+                        37.0,
+                        88.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 1,
+                "label": "algorithm",
+                "score": 0.32461079955101013,
+                "coordinate": [
+                    37,
+                    19,
+                    483,
+                    260
+                ],
+                "order": 2,
+                "polygon_points": [
+                    [
+                        37.0,
+                        19.0
+                    ],
+                    [
+                        483.0,
+                        19.0
+                    ],
+                    [
+                        483.0,
+                        260.0
+                    ],
+                    [
+                        37.0,
+                        260.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.40838637948036194,
+                "coordinate": [
+                    39,
+                    96,
+                    409,
+                    132
+                ],
+                "order": 3,
+                "polygon_points": [
+                    [
+                        39.0,
+                        96.0
+                    ],
+                    [
+                        39.0,
+                        130.0
+                    ],
+                    [
+                        406.0,
+                        130.0
+                    ],
+                    [
+                        408.0,
+                        126.0
+                    ],
+                    [
+                        406.0,
+                        96.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.38697031140327454,
+                "coordinate": [
+                    40,
+                    136,
+                    311,
+                    170
+                ],
+                "order": 4,
+                "polygon_points": [
+                    [
+                        40.0,
+                        136.0
+                    ],
+                    [
+                        311.0,
+                        136.0
+                    ],
+                    [
+                        311.0,
+                        170.0
+                    ],
+                    [
+                        40.0,
+                        170.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.3810088634490967,
+                "coordinate": [
+                    38,
+                    174,
+                    236,
+                    209
+                ],
+                "order": 5,
+                "polygon_points": [
+                    [
+                        38.0,
+                        173.0
+                    ],
+                    [
+                        234.0,
+                        173.0
+                    ],
+                    [
+                        234.0,
+                        207.0
+                    ],
+                    [
+                        38.0,
+                        207.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.40696510672569275,
+                "coordinate": [
+                    39,
+                    211,
+                    475,
+                    256
+                ],
+                "order": 6,
+                "polygon_points": [
+                    [
+                        39.00001525878906,
+                        210.99534606933594
+                    ],
+                    [
+                        474.1910400390625,
+                        213.0242156982422
+                    ],
+                    [
+                        474.0,
+                        254.00001525878906
+                    ],
+                    [
+                        38.80897521972656,
+                        251.9711456298828
+                    ]
+                ]
+            }
+        ]
+    }
+}

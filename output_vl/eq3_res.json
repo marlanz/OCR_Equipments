@@ -1,0 +1,461 @@
+{
+    "input_path": "./tests/test_files/eq3.jpg",
+    "page_index": null,
+    "page_count": null,
+    "width": 564,
+    "height": 330,
+    "model_settings": {
+        "use_doc_preprocessor": false,
+        "use_layout_detection": true,
+        "use_chart_recognition": false,
+        "use_seal_recognition": false,
+        "use_ocr_for_image_block": false,
+        "format_block_content": false,
+        "merge_layout_blocks": true,
+        "markdown_ignore_labels": [
+            "number",
+            "footnote",
+            "header",
+            "header_image",
+            "footer",
+            "footer_image",
+            "aside_text"
+        ],
+        "return_layout_polygon_points": true
+    },
+    "parsing_res_list": [
+        {
+            "block_label": "header_image",
+            "block_content": "",
+            "block_bbox": [
+                15,
+                16,
+                90,
+                68
+            ],
+            "block_id": 0,
+            "block_order": null,
+            "group_id": 0,
+            "block_polygon_points": [
+                [
+                    14.0,
+                    15.0
+                ],
+                [
+                    88.0,
+                    15.0
+                ],
+                [
+                    88.0,
+                    66.0
+                ],
+                [
+                    14.0,
+                    66.0
+                ]
+            ]
+        },
+        {
+            "block_label": "header_image",
+            "block_content": "",
+            "block_bbox": [
+                528,
+                12,
+                561,
+                31
+            ],
+            "block_id": 1,
+            "block_order": null,
+            "group_id": 1,
+            "block_polygon_points": [
+                [
+                    527.0,
+                    11.0
+                ],
+                [
+                    559.0,
+                    11.0
+                ],
+                [
+                    559.0,
+                    30.0
+                ],
+                [
+                    527.0,
+                    30.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "MÁY HÀN CO2 TÂN THÀNH -TTC-500T",
+            "block_bbox": [
+                34,
+                116,
+                461,
+                175
+            ],
+            "block_id": 2,
+            "block_order": 1,
+            "group_id": 2,
+            "block_polygon_points": [
+                [
+                    34.0,
+                    116.0
+                ],
+                [
+                    461.0,
+                    116.0
+                ],
+                [
+                    461.0,
+                    175.0
+                ],
+                [
+                    34.0,
+                    175.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Mã MMTB :B22400199",
+            "block_bbox": [
+                32,
+                184,
+                383,
+                212
+            ],
+            "block_id": 3,
+            "block_order": 2,
+            "group_id": 3,
+            "block_polygon_points": [
+                [
+                    32.0,
+                    183.0
+                ],
+                [
+                    381.0,
+                    183.0
+                ],
+                [
+                    381.0,
+                    210.0
+                ],
+                [
+                    32.0,
+                    210.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Model : TTC-500T",
+            "block_bbox": [
+                31,
+                217,
+                290,
+                244
+            ],
+            "block_id": 4,
+            "block_order": 3,
+            "group_id": 4,
+            "block_polygon_points": [
+                [
+                    30.0,
+                    216.0
+                ],
+                [
+                    288.0,
+                    216.0
+                ],
+                [
+                    288.0,
+                    242.0
+                ],
+                [
+                    30.0,
+                    242.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Xương : AH2",
+            "block_bbox": [
+                28,
+                248,
+                215,
+                276
+            ],
+            "block_id": 5,
+            "block_order": 4,
+            "group_id": 5,
+            "block_polygon_points": [
+                [
+                    28.0,
+                    247.0
+                ],
+                [
+                    213.0,
+                    247.0
+                ],
+                [
+                    213.0,
+                    274.0
+                ],
+                [
+                    28.0,
+                    274.0
+                ]
+            ]
+        },
+        {
+            "block_label": "text",
+            "block_content": "Vị trí : TỔ RẤP THỐ",
+            "block_bbox": [
+                27,
+                279,
+                304,
+                310
+            ],
+            "block_id": 6,
+            "block_order": 5,
+            "group_id": 6,
+            "block_polygon_points": [
+                [
+                    27.0,
+                    279.0
+                ],
+                [
+                    304.0,
+                    279.0
+                ],
+                [
+                    304.0,
+                    310.0
+                ],
+                [
+                    27.0,
+                    310.0
+                ]
+            ]
+        }
+    ],
+    "layout_det_res": {
+        "input_path": null,
+        "page_index": null,
+        "boxes": [
+            {
+                "cls_id": 13,
+                "label": "header_image",
+                "score": 0.7231281995773315,
+                "coordinate": [
+                    15,
+                    16,
+                    90,
+                    68
+                ],
+                "order": null,
+                "polygon_points": [
+                    [
+                        14.0,
+                        15.0
+                    ],
+                    [
+                        88.0,
+                        15.0
+                    ],
+                    [
+                        88.0,
+                        66.0
+                    ],
+                    [
+                        14.0,
+                        66.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 13,
+                "label": "header_image",
+                "score": 0.5540968775749207,
+                "coordinate": [
+                    528,
+                    12,
+                    561,
+                    31
+                ],
+                "order": null,
+                "polygon_points": [
+                    [
+                        527.0,
+                        11.0
+                    ],
+                    [
+                        559.0,
+                        11.0
+                    ],
+                    [
+                        559.0,
+                        30.0
+                    ],
+                    [
+                        527.0,
+                        30.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.41066211462020874,
+                "coordinate": [
+                    34,
+                    116,
+                    461,
+                    175
+                ],
+                "order": 1,
+                "polygon_points": [
+                    [
+                        34.0,
+                        116.0
+                    ],
+                    [
+                        461.0,
+                        116.0
+                    ],
+                    [
+                        461.0,
+                        175.0
+                    ],
+                    [
+                        34.0,
+                        175.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6192501783370972,
+                "coordinate": [
+                    32,
+                    184,
+                    383,
+                    212
+                ],
+                "order": 2,
+                "polygon_points": [
+                    [
+                        32.0,
+                        183.0
+                    ],
+                    [
+                        381.0,
+                        183.0
+                    ],
+                    [
+                        381.0,
+                        210.0
+                    ],
+                    [
+                        32.0,
+                        210.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6855348944664001,
+                "coordinate": [
+                    31,
+                    217,
+                    290,
+                    244
+                ],
+                "order": 3,
+                "polygon_points": [
+                    [
+                        30.0,
+                        216.0
+                    ],
+                    [
+                        288.0,
+                        216.0
+                    ],
+                    [
+                        288.0,
+                        242.0
+                    ],
+                    [
+                        30.0,
+                        242.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6748087406158447,
+                "coordinate": [
+                    28,
+                    248,
+                    215,
+                    276
+                ],
+                "order": 4,
+                "polygon_points": [
+                    [
+                        28.0,
+                        247.0
+                    ],
+                    [
+                        213.0,
+                        247.0
+                    ],
+                    [
+                        213.0,
+                        274.0
+                    ],
+                    [
+                        28.0,
+                        274.0
+                    ]
+                ]
+            },
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.6864279508590698,
+                "coordinate": [
+                    27,
+                    279,
+                    304,
+                    310
+                ],
+                "order": 5,
+                "polygon_points": [
+                    [
+                        27.0,
+                        279.0
+                    ],
+                    [
+                        304.0,
+                        279.0
+                    ],
+                    [
+                        304.0,
+                        310.0
+                    ],
+                    [
+                        27.0,
+                        310.0
+                    ]
+                ]
+            }
+        ]
+    }
+}
