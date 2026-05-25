@@ -3,7 +3,6 @@
 # ==============================================================================
 FROM python:3.10-slim AS builder
 
-# Set system-level build environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
@@ -11,7 +10,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PADDLE_HOME=/models/paddle \
     PADDLE_USER_DIR=/models/paddle
 
-# Install build-time system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
@@ -21,35 +19,53 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Create and activate virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Upgrade pip and install CPU-only PyTorch and torchvision
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir --upgrade pip
 
-# Set working directory and copy dependency descriptors
+# 1. PyTorch CPU — largest download, pin the index so it never pulls CUDA wheels
+RUN pip install --no-cache-dir \
+    torch \
+    torchvision \
+    --index-url https://download.pytorch.org/whl/cpu
+
+# 2. PaddlePaddle CPU — second largest, install before paddlex so paddlex
+#    sees it already present and doesn't pull its own default wheel
+RUN pip install --no-cache-dir "paddlepaddle>=2.6.0"
+
+# 3. opencv-python-headless — replaces opencv-python from requirements.txt;
+#    must land before paddlex so paddlex doesn't pull the GUI variant
+RUN pip install --no-cache-dir opencv-python-headless
+
+# 4. HuggingFace stack pinned to your floor version — install before paddlex
+#    so paddlex cannot downgrade it
+RUN pip install --no-cache-dir "transformers>=5.8.0" accelerate tokenizers
+
+# 5. paddlex[ocr] — now sees torch, paddle, opencv, transformers already
+#    satisfied and will skip re-downloading them
+RUN pip install --no-cache-dir "paddlex[ocr]>=3.5.0,<3.6.0"
+
+# 6. Remaining lightweight deps — everything that isn't already pulled in above.
+#    opencv-python is replaced by headless above so we drop it here.
 WORKDIR /app
-COPY requirements.txt pyproject.toml setup.py /app/
+COPY requirements.txt /app/
 
-# Install application dependencies in the virtual environment
-RUN pip install --no-cache-dir -r requirements.txt
+RUN grep -ivE \
+    "^(torch|torchvision|paddlepaddle|paddlex|transformers|opencv-python)" \
+    requirements.txt > requirements_remaining.txt && \
+    pip install --no-cache-dir -r requirements_remaining.txt
 
-# Copy application files and install the package
+# 7. Install the application package
+COPY pyproject.toml setup.py /app/
 COPY . /app/
 RUN pip install --no-cache-dir .
-
-# Create models directory and pre-download VLM models during build
-RUN mkdir -p /models && \
-    python -c "from paddleocr import PaddleOCRVL; PaddleOCRVL(pipeline_version='v1.5', engine='transformers', device='cpu', use_doc_orientation_classify=False, use_doc_unwarping=False, use_layout_detection=True)"
 
 # ==============================================================================
 # Stage 2: Runtime Stage (Runner)
 # ==============================================================================
 FROM python:3.10-slim AS runner
 
-# Set system-level runtime environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
@@ -57,41 +73,27 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     HF_HOME=/models/huggingface \
     PADDLE_HOME=/models/paddle \
     PADDLE_USER_DIR=/models/paddle \
-    PATH="/opt/venv/bin:$PATH"\
-    PORT=8000\
+    PATH="/opt/venv/bin:$PATH" \
     SETUPTOOLS_SCM_PRETEND_VERSION=3.5.0
 
-# Install ONLY minimal runtime system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Create secure non-root user and group
 RUN groupadd -g 1000 appgroup && \
     useradd -u 1000 -g appgroup -m -s /bin/bash appuser
 
-# Copy virtual environment from builder stage
 COPY --from=builder /opt/venv /opt/venv
 
-# Copy pre-downloaded model weights from builder stage
-COPY --from=builder /models /models
-
-# Set working directory
 WORKDIR /app
-
-# Copy FastAPI entrypoint
 COPY main.py /app/
 
-# Setup ownership for application and model directories
-RUN chown -R appuser:appgroup /app /models
+RUN chown -R appuser:appgroup /app
 
-# Switch to the non-root user
 USER appuser
 
-# Expose the application port
 EXPOSE 8000
 
-# Run the FastAPI application using Uvicorn
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
