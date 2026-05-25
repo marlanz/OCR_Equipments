@@ -41,3 +41,5 @@ python-multipart
 # Testing
 pytest
 httpx
+
+huggingface_hub
